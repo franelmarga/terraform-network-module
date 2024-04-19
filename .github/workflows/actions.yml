@@ -3,17 +3,23 @@ name: Terraform GitHub Actions
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
+  issue_comment:
+    types: [created]
 
 jobs:
   terraform:
-    name: 'Terraform'
+    if: |
+      github.event_name == 'issue_comment' && 
+      contains(github.event.comment.body, 'test this please') && 
+      github.event.issue.pull_request
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: Checkout the repository
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.issue.pull_request.head.sha }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
