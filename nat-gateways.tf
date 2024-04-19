@@ -5,7 +5,7 @@
 # ALSO note that we use element() to loop through all the public subnets and associate them with the NAT Gateway resources!!
 
 resource "aws_eip" "nat" {
-  count = var.create_nat_gateway ? length(var.public_subnets) : 0
+  count  = var.create_nat_gateway ? length(var.public_subnets) : 0
   domain = "vpc"
   tags = {
     Name = "nat-eip-${element(var.availability_zones, count.index)}-${var.env}"
