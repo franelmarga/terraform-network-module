@@ -46,7 +46,7 @@ To use this module in your Terraform configuration, use the following syntax:
 
 ```
 module "network" {
-  source  = "git::https://github.com/franelmarga/terraform-network-module.git?ref=1.0.1"
+  source  = "git::https://github.com/franelmarga/terraform-network-module.git?ref=1.0.4"
 
   env                = "dev"
   region             = "us-west-2"
