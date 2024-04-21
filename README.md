@@ -22,9 +22,8 @@ This module is built specifically for the AWS provider and will not work with ot
 | `env` | Environment for the network deployment (e.g. 'dev', 'staging', 'prod'). | `string` | n/a | yes |
 | `region` | AWS region to deploy the network resources. | `string` | n/a | yes |
 | `vpc_cidr` | The CIDR block for the VPC. | `string` | n/a | yes |
-| `availability_zones` | List of availability zones in which to create subnets. | `list(string)` | n/a | yes |
-| `public_subnets` | Map of public subnet CIDR blocks keyed by availability zone. | `map(string)` | n/a | yes |
-| `private_subnets` | Map of private subnet CIDR blocks keyed by availability zone. | `map(string)` | n/a | yes |
+| `public_subnets_cidrs` | Map of public subnet CIDR blocks keyed by availability zone. | `map(string)` | n/a | yes |
+| `private_subnets_cidrs` | Map of private subnet CIDR blocks keyed by availability zone. | `map(string)` | n/a | yes |
 | `create_nat_gateway` | Whether to create NAT gateways for private subnets. | `bool` | `true` | no |
 | `repo_tags` | Common tags to apply to all resources in the module. | `map(string)` | `{}` | no |
 | `env_tags` | Tags specific to the environment where the network is being deployed. | `map(string)` | `{}` | no |
@@ -48,26 +47,18 @@ To use this module in your Terraform configuration, use the following syntax:
 module "network" {
   source  = "git::https://github.com/franelmarga/terraform-network-module.git?ref=1.0.4"
 
-  env                = "dev"
-  region             = "us-west-2"
-  vpc_cidr           = "10.0.0.0/16"
-  availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
-  public_subnets     = {
-    "us-west-2a" = "10.0.1.0/24",
-    "us-west-2b" = "10.0.2.0/24",
-    "us-west-2c" = "10.0.3.0/24"
-  }
-  private_subnets    = {
-    "us-west-2a" = "10.0.101.0/24",
-    "us-west-2b" = "10.0.102.0/24",
-    "us-west-2c" = "10.0.103.0/24"
-  }
-  create_nat_gateway = true
-  repo_tags          = {
+  env                      = "dev"
+  region                   = "us-west-2"
+  vpc_cidr                 = "10.0.0.0/16"
+  availability_zones       = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  public_subnets_cidrs     = ["10.0.1.0/24","10.0.2.0/24","10.0.3.0/24"]
+  private_subnets_cidrs    = ["10.0.1.0/24","10.0.2.0/24","10.0.3.0/24"]
+  create_nat_gateway       = true
+  repo_tags                = {
     "Owner" = "YourName",
     "Environment" = "dev"
   }
-  env_tags           = {
+  env_tags                 = {
     "Name" = "MyApp",
     "Environment" = "dev"
   }
