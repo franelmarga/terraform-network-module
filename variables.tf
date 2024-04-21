@@ -37,11 +37,6 @@ variable "private_subnets_cidrs" {
   default = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 }
 
-variable "availability_zones" {
-  description = "List of availability zones in the region"
-  type        = list(string)
-}
-
 variable "create_nat_gateway" {
   description = "Whether to create NAT gateways or not"
   type        = bool
