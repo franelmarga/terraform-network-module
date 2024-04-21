@@ -12,7 +12,7 @@ resource "aws_network_acl" "public" {
 # Association of the ACL with the public subnets
 
 resource "aws_network_acl_association" "public" {
-  count          = length(var.public_subnets)
+  count          = length(var.public_subnets_cidrs)
   network_acl_id = aws_network_acl.public.id
   subnet_id      = element(aws_subnet.public.*.id, count.index)
 }
@@ -30,7 +30,7 @@ resource "aws_network_acl" "private" {
 # Association of the ACL with the private subnets
 
 resource "aws_network_acl_association" "private" {
-  count          = length(var.private_subnets)
+  count          = length(var.private_subnets_cidrs)
   network_acl_id = aws_network_acl.private.id
   subnet_id      = element(aws_subnet.private.*.id, count.index)
 }
