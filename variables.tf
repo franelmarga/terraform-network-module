@@ -46,3 +46,8 @@ variable "create_nat_gateway" {
   description = "Whether to create NAT gateways or not"
   type        = bool
 }
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
