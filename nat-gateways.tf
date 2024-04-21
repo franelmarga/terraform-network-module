@@ -8,7 +8,7 @@ resource "aws_eip" "nat" {
   count  = var.create_nat_gateway ? length(var.public_subnets_cidrs) : 0
   domain = "vpc"
   tags = {
-    Name = "nat-eip-${element(var.availability_zones, count.index)}-${var.env}"
+    Name = "nat-eip-${count.index}-${var.env}"
   }
 }
 
@@ -18,6 +18,7 @@ resource "aws_nat_gateway" "main" {
   allocation_id = aws_eip.nat[count.index].id
 
   tags = {
-    Name = "nat-gateway-${element(var.availability_zones, count.index)}-${var.env}"
+    Name = "nat-gateway-${count.index}-${var.env}"
   }
 }
+

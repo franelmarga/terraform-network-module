@@ -34,7 +34,7 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "private-route-table-${element(var.availability_zones, count.index)}-${var.env}"
+    Name = "private-route-table-${count.index}-${var.env}"
   }
 }
 
