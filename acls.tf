@@ -35,49 +35,76 @@ resource "aws_network_acl_association" "private" {
   subnet_id      = element(aws_subnet.private.*.id, count.index)
 }
 
-# ACL Rules for public subnets
+# ACL Rules for public subnets. We let the user define the rules in the terraform.tfvars file.
+# This could be done with foreach and dynamic blocks if rules where handled as objects!! I tried to emulate it.
+
 resource "aws_network_acl_rule" "public_inbound" {
+  count = length(var.public_inbound_acl_rules)
+
   network_acl_id = aws_network_acl.public.id
-  rule_number    = 100
-  rule_action    = "allow"
-  egress         = false
-  protocol       = "tcp"
-  from_port      = 80
-  to_port        = 80
-  cidr_block     = "0.0.0.0/0"
+
+  egress          = false
+  rule_number     = var.public_inbound_acl_rules[count.index]["rule_number"]
+  rule_action     = var.public_inbound_acl_rules[count.index]["rule_action"]
+  from_port       = lookup(var.public_inbound_acl_rules[count.index], "from_port", null)
+  to_port         = lookup(var.public_inbound_acl_rules[count.index], "to_port", null)
+  icmp_code       = lookup(var.public_inbound_acl_rules[count.index], "icmp_code", null)
+  icmp_type       = lookup(var.public_inbound_acl_rules[count.index], "icmp_type", null)
+  protocol        = var.public_inbound_acl_rules[count.index]["protocol"]
+  cidr_block      = lookup(var.public_inbound_acl_rules[count.index], "cidr_block", null)
+  ipv6_cidr_block = lookup(var.public_inbound_acl_rules[count.index], "ipv6_cidr_block", null)
 }
 
 resource "aws_network_acl_rule" "public_outbound" {
+  count = length(var.public_outbound_acl_rules)
+
   network_acl_id = aws_network_acl.public.id
-  rule_number    = 100
-  rule_action    = "allow"
-  egress         = true
-  protocol       = "-1"
-  from_port      = 0
-  to_port        = 0
-  cidr_block     = "0.0.0.0/0"
+
+  egress          = true
+  rule_number     = var.public_outbound_acl_rules[count.index]["rule_number"]
+  rule_action     = var.public_outbound_acl_rules[count.index]["rule_action"]
+  from_port       = lookup(var.public_outbound_acl_rules[count.index], "from_port", null)
+  to_port         = lookup(var.public_outbound_acl_rules[count.index], "to_port", null)
+  icmp_code       = lookup(var.public_outbound_acl_rules[count.index], "icmp_code", null)
+  icmp_type       = lookup(var.public_outbound_acl_rules[count.index], "icmp_type", null)
+  protocol        = var.public_outbound_acl_rules[count.index]["protocol"]
+  cidr_block      = lookup(var.public_outbound_acl_rules[count.index], "cidr_block", null)
+  ipv6_cidr_block = lookup(var.public_outbound_acl_rules[count.index], "ipv6_cidr_block", null)
 }
 
 # ACL Rules for private subnets
+
 resource "aws_network_acl_rule" "private_inbound" {
+  count = length(var.private_inbound_acl_rules)
+
   network_acl_id = aws_network_acl.private.id
-  rule_number    = 100
-  rule_action    = "allow"
-  egress         = false
-  protocol       = "tcp"
-  from_port      = 443
-  to_port        = 443
-  cidr_block     = "0.0.0.0/0"
+
+  egress          = true
+  rule_number     = var.private_inbound_acl_rules[count.index]["rule_number"]
+  rule_action     = var.private_inbound_acl_rules[count.index]["rule_action"]
+  from_port       = lookup(var.private_inbound_acl_rules[count.index], "from_port", null)
+  to_port         = lookup(var.private_inbound_acl_rules[count.index], "to_port", null)
+  icmp_code       = lookup(var.private_inbound_acl_rules[count.index], "icmp_code", null)
+  icmp_type       = lookup(var.private_inbound_acl_rules[count.index], "icmp_type", null)
+  protocol        = var.private_inbound_acl_rules[count.index]["protocol"]
+  cidr_block      = lookup(var.private_inbound_acl_rules[count.index], "cidr_block", null)
+  ipv6_cidr_block = lookup(var.private_inbound_acl_rules[count.index], "ipv6_cidr_block", null)
 }
 
 resource "aws_network_acl_rule" "private_outbound" {
+  count = length(var.private_outbound_acl_rules)
+
   network_acl_id = aws_network_acl.private.id
-  rule_number    = 100
-  rule_action    = "allow"
-  egress         = true
-  protocol       = "-1"
-  from_port      = 0
-  to_port        = 0
-  cidr_block     = "0.0.0.0/0"
+
+  egress          = true
+  rule_number     = var.private_outbound_acl_rules[count.index]["rule_number"]
+  rule_action     = var.private_outbound_acl_rules[count.index]["rule_action"]
+  from_port       = lookup(var.private_outbound_acl_rules[count.index], "from_port", null)
+  to_port         = lookup(var.private_outbound_acl_rules[count.index], "to_port", null)
+  icmp_code       = lookup(var.private_outbound_acl_rules[count.index], "icmp_code", null)
+  icmp_type       = lookup(var.private_outbound_acl_rules[count.index], "icmp_type", null)
+  protocol        = var.private_outbound_acl_rules[count.index]["protocol"]
+  cidr_block      = lookup(var.private_outbound_acl_rules[count.index], "cidr_block", null)
+  ipv6_cidr_block = lookup(var.private_outbound_acl_rules[count.index], "ipv6_cidr_block", null)
 }
 
