@@ -24,6 +24,10 @@ This module is built specifically for the AWS provider and will not work with ot
 | `vpc_cidr` | The CIDR block for the VPC. | `string` | n/a | yes |
 | `public_subnets_cidrs` | Map of public subnet CIDR blocks keyed by availability zone. | `map(string)` | n/a | yes |
 | `private_subnets_cidrs` | Map of private subnet CIDR blocks keyed by availability zone. | `map(string)` | n/a | yes |
+| `public_inbound_acl_rules` | List of maps of the rules of the ACL. | `list(map(string))` | n/a | yes |
+| `public_outbound_acl_rules` | List of maps of the rules of the ACL. | `list(map(string))` | n/a | yes |
+| `private_inbound_acl_rules` | List of maps of the rules of the ACL. | `list(map(string))` | n/a | yes |
+| `private_outbound_acl_rules` | List of maps of the rules of the ACL. | `list(map(string))` | n/a | yes |
 | `create_nat_gateway` | Whether to create NAT gateways for private subnets. | `bool` | `true` | no |
 | `repo_tags` | Common tags to apply to all resources in the module. | `map(string)` | `{}` | no |
 | `env_tags` | Tags specific to the environment where the network is being deployed. | `map(string)` | `{}` | no |
@@ -57,6 +61,46 @@ module "network" {
     "Owner" = "YourName",
     "Environment" = "dev"
   }
+  public_inbound_acl_rules = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+    public_outbound_acl_rules = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+    private_inbound_acl_rules = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+    private_outbound_acl_rules = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
   env_tags                 = {
     "Name" = "MyApp",
     "Environment" = "dev"
