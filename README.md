@@ -22,8 +22,8 @@ This module is built specifically for the AWS provider and will not work with ot
 | `env` | Environment for the network deployment (e.g. 'dev', 'staging', 'prod'). | `string` | n/a | yes |
 | `region` | AWS region to deploy the network resources. | `string` | n/a | yes |
 | `vpc_cidr` | The CIDR block for the VPC. | `string` | n/a | yes |
-| `public_subnets_cidrs` | Map of public subnet CIDR blocks keyed by availability zone. | `map(string)` | n/a | yes |
-| `private_subnets_cidrs` | Map of private subnet CIDR blocks keyed by availability zone. | `map(string)` | n/a | yes |
+| `public_subnets_cidrs` | List of public subnet CIDR blocks. | `list(string)` | n/a | yes |
+| `private_subnets_cidrs` | List of private subnet CIDR blocks. | `list(string)` | n/a | yes |
 | `public_inbound_acl_rules` | List of maps of the rules of the ACL. | `list(map(string))` | n/a | yes |
 | `public_outbound_acl_rules` | List of maps of the rules of the ACL. | `list(map(string))` | n/a | yes |
 | `private_inbound_acl_rules` | List of maps of the rules of the ACL. | `list(map(string))` | n/a | yes |
